@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | The Sketchbook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ---
+        Design 10: "The Blueprint" Sketchbook
+        - Palette: Textured paper, pencil gray, highlighter blue accent.
+        - Typography: "Kalam" for handwritten headings, "Poppins" for body.
+        - Layout: Scrapbook style, rotated elements, overlapping.
+        - Animation: SVG path drawing, subtle wiggles on hover.
+        - Texture: Paper, pencil strokes, tape.
+        --- */
+
+        :root {
+            --bg-color: #FDFDFB;
+            --text-color: #333333;
+            --accent-color: #3A86FF;
+            --border-color: #333333;
+            --paper-texture: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n" x="0" y="0"><feTurbulence type="fractalNoise" baseFrequency="0.7" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.08"/></svg>');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: var(--paper-texture);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Kalam', cursive;
+            line-height: 1.2;
+        }
+
+        /* --- Header --- */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 2rem 0;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Kalam', cursive;
+            font-size: 2rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+        
+        .main-nav a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .main-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 6rem;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        
+        .hero-arrow {
+            position: absolute;
+            bottom: 5rem;
+            left: 60%;
+            transform: rotate(15deg);
+            width: 100px;
+        }
+
+        /* --- Sketchy Border Animation --- */
+        .sketch-border {
+            position: absolute;
+            top: -20px; left: -20px;
+            width: calc(100% + 40px);
+            height: calc(100% + 40px);
+            pointer-events: none;
+        }
+        
+        .sketch-border path {
+            stroke: var(--border-color);
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 2s ease-in-out;
+        }
+
+        section.visible .sketch-border path {
+            stroke-dashoffset: 0;
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            position: relative;
+            padding: 3rem;
+            background: white;
+            transform: rotate(-2deg);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .about-content::before { /* Tape effect */
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%) rotate(3deg);
+            width: 150px;
+            height: 40px;
+            background: rgba(58, 134, 255, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        .about-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-content p {
+            max-width: 600px;
+        }
+
+        /* --- Projects Section --- */
+        .section-title {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem 2rem;
+        }
+        
+        .project-card {
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: scale(1.05) rotate(1deg);
+        }
+        
+        .project-card:nth-child(odd) {
+            transform: rotate(-3deg);
+        }
+        
+        .project-card:nth-child(even) {
+            transform: rotate(2deg);
+            margin-top: 2rem;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border: 10px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .project-card h3 {
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+            background: var(--accent-color);
+            color: white;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            transform: rotate(-2deg) translateY(-25px);
+        }
+
+        /* --- Contact Section --- */
+        .contact-content {
+            text-align: center;
+        }
+        
+        .contact-content h2 {
+            font-size: 4rem;
+        }
+        
+        .contact-content p {
+            font-size: 1.2rem;
+            margin: 1rem 0 2rem;
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Kalam', cursive;
+            font-size: 1.5rem;
+            padding: 0.5rem 2rem;
+            border: 2px solid var(--border-color);
+            position: relative;
+        }
+        
+        .contact-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            opacity: 0.3;
+            z-index: -1;
+            transition: transform 0.3s;
+        }
+        
+        .contact-btn:hover::after {
+            transform: translate(5px, 5px);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 4rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .project-card:nth-child(even) { margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">YN.</a>
+            <nav class="main-nav">
+                <a href="#about">about</a>
+                <a href="#projects">projects</a>
+                <a href="#contact">contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container hero-content">
+                <h1>Ideas made real with code.</h1>
+                <p>A creative developer & problem solver.</p>
+                <svg class="hero-arrow" viewBox="0 0 123 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.33979 21.5834C11.0354 23.3332 28.8995 22.4594 39.2132 19.8335C57.4093 15.1119 74.7282 2.22233 94.1331 3.389C113.208 4.53307 121.538 18.5835 121.538 18.5835M121.538 18.5835L104.211 2.91681M121.538 18.5835L106.337 32.9168" stroke="#333333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </section>
+
+        <section id="about" class="container">
+            <div class="about-content">
+                <svg class="sketch-border" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M5 5 Q 50 0, 95 5 Q 100 50, 95 95 Q 50 100, 5 95 Q 0 50, 5 5 Z" />
+                </svg>
+                <h2>My whole deal...</h2>
+                <p>I'm a developer who loves the process of creation, from the first spark of an idea to the final polished product. I believe the best digital experiences are born from a blend of solid engineering and a touch of human creativity. My happy place is at the intersection of logic and imagination.</p>
+            </div>
+        </section>
+
+        <section id="projects" class="container">
+            <h2 class="section-title">Some things I've built</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/3A86FF/FFFFFF?text=Project+1" alt="Project 1">
+                    <h3>The Story Engine</h3>
+                </div>
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/333333/FFFFFF?text=Project+2" alt="Project 2">
+                    <h3>Pixel Pantry</h3>
+                </div>
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/FDFDFB/333333?text=Project+3" alt="Project 3">
+                    <h3>Audio Scape</h3>
+                </div>
+                 <!-- Project 4 -->
+                 <div class="project-card">
+                    <img src="https://placehold.co/600x400/FFFFFF/333333?text=Project+4" alt="Project 4">
+                    <h3>Data Doodle</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="container">
+            <div class="contact-content">
+                <h2>Let's draw up a plan.</h2>
+                <p>Have an idea you want to bring to life? I'd love to hear about it.</p>
+                <a href="mailto:your.email@example.com" class="contact-btn">Email me!</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Lucide Icons ---
+            lucide.createIcons();
+            
+            // --- Animate Sections on Scroll ---
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
